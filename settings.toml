@@ -1,0 +1,26 @@
+[development]
+
+#Auth config | Admin user details to login
+user = "admin"
+#password =
+
+#base urls
+op5_base_url = "https://localhost:4437/api"
+
+[staging]
+
+#Auth config | Admin user details to login
+#user =
+#password =
+
+#base urls
+op5_base_url = "https://<staging-env-url>:<port>/api"
+
+[production]
+
+#Auth config | Admin user details to login
+user = "admin"
+#user_password =
+
+#base urls
+op5_base_url = "https://<production-env-url>:<port>/api"
