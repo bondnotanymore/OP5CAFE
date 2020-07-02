@@ -7,6 +7,9 @@ user = "admin"
 #base urls
 op5_base_url = "https://localhost:4437/api"
 
+#test data
+host_addr = 'localhost'
+
 [staging]
 
 #Auth config | Admin user details to login
