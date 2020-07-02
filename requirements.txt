@@ -1,0 +1,15 @@
+cryptography
+allure-pytest
+cachetools==3.1.0
+dynaconf
+faker
+netaddr
+pre-commit
+pytest
+pytest-cov
+pytest-deadfixtures
+pytest-ordering
+pytest-sugar
+requests
+secrets
+uuid
