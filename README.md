@@ -4,7 +4,7 @@
 
 Pytest based framework to perform functional end-to-end testing of OP5 backend APIs.
 
-Automated tests for [SPARK](https://github.rackspace.com/kapi3776/Spark_pytest),
+Automated tests for [OP5](https://github.com/bondnotanymore/OP5CAFE),
 
 ## Initial Setup
 
