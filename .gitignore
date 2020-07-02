@@ -1,0 +1,15 @@
+.idea
+.DS_Store
+.pytest_cache
+__pycache__/
+settings.ini
+test_settings.py
+*.log
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+coverage/
+
+# Dynaconf secret files
+*.secrets.*
