@@ -11,7 +11,7 @@ logging.basicConfig(
 )
 
 pytest_plugins = [
-    'common.Fixtures.Volumes.conftest_host',
+    'common.Fixtures.Configuration.conftest_config',
 ]
 
 
