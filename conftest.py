@@ -12,6 +12,7 @@ logging.basicConfig(
 
 pytest_plugins = [
     'common.Fixtures.Configuration.conftest_config',
+    'common.Fixtures.Report.conftest_report',
 ]
 
 
