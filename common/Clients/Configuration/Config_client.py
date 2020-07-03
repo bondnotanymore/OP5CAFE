@@ -20,15 +20,15 @@ class ConfigBaseClient(object):
 
     def get_config_changes_to_save(self,):
         full_url = f'{self.url}/{self._CHANGE}'
-        return self.client.get(url=self.url,)
+        return self.client.get(url=full_url,)
 
     def revert_config_changes(self,):
         full_url = f'{self.url}/{self._CHANGE}'
-        return self.client.post(url=self.url,)
+        return self.client.post(url=full_url,)
 
     def save_config_changes(self,):
         full_url = f'{self.url}/{self._CHANGE}'
-        return self.client.post(url=self.url,)
+        return self.client.post(url=full_url,)
 
     _HOST = 'host'
 
