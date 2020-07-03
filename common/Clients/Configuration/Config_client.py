@@ -67,6 +67,12 @@ class ConfigBaseClient(object):
         full_url = f'{self.url}/{self._HOST}/{host_name}'
         return self.client.put(url=full_url, data=updated_host)
 
+    def patch_host_details(self, host_name, **kwargs):
+
+        updated_host = dict(**kwargs)
+        full_url = f'{self.url}/{self._HOST}/{host_name}'
+        return self.client.patch(url=full_url, data=updated_host)
+
     def delete_host(self, host_name):
 
         full_url = f'{self.url}/{self._HOST}/{host_name}'
