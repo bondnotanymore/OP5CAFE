@@ -17,10 +17,10 @@ logging.basicConfig(
 )
 
 
+@pytest.mark.smoke
+@pytest.mark.host
 class TestHostConfig(ConfigBaseFixture):
 
-    @pytest.mark.smoke
-    @pytest.mark.host
     def test_list_default_hosts(self):
         """Test to verify that OP5 monitor itself
         is added as a default host after installation
