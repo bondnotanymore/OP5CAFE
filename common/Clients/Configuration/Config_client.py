@@ -118,7 +118,7 @@ class ConfigBaseClient(object):
 
     def patch_service_details(self, description, **kwargs):
 
-        updated_service = dict(**kwargs)
+        updated_service = dict(service_description=description, **kwargs)
         service_desc = description
         full_url = f'{self.url}/{self._SERVICE}/{service_desc}'
         return self.client.patch(url=full_url, data=updated_service)
