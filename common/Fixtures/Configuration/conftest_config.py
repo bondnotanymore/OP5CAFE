@@ -32,6 +32,7 @@ def my_config_root_fixture(request, op5_client_auth_fix, ):
     # inject class variables
 
     request.cls.cb = cb
+    request.cls._hosts_to_delete = _hosts_to_delete
 
     yield
 
@@ -41,8 +42,18 @@ def my_config_root_fixture(request, op5_client_auth_fix, ):
 
     for host_name in _hosts_to_delete:
         logging.info('Now lets delete the hosts one after the other')
-        r = cb.delete_host(host_name)
-        logging.info(r.text)
+        for name in _hosts_to_delete:
+            r = cb.delete_host(host_name=name)
+
+            assert r.status_code == 200
+
+            # Lets confirm this change to register in the config files
+            # and the monitor service to restart
+
+            r = cb.get_config_changes_to_save()
+            assert r.status_code == 200
+            r = cb.save_config_changes()
+            assert r.status_code == 200
 
 
 @pytest.mark.usefixtures('my_config_root_fixture')
@@ -57,7 +68,6 @@ class ConfigBaseFixture:
 
     @classmethod
     def commit_to_configuration(cls, change_type, object_type, object_name):
-
         r = cls.cb.get_config_changes_to_save()
         assert r.status_code == 200
 
@@ -81,3 +91,26 @@ class ConfigBaseFixture:
         assert r.status_code == 200
         changes = r.json()
         assert not changes
+
+    @classmethod
+    def create_new_host(cls, name, maxcheckattempts, hostaddress,
+                        command, commandargs, checkinterval, retryinterval,
+                        activechecks, **kwargs):
+
+        r = cls.cb.add_host(name=name, maxcheckattempts=maxcheckattempts,
+                            activechecks=activechecks,
+                            hostaddress=hostaddress,
+                            command=command, commandargs=commandargs,
+                            checkinterval=checkinterval,
+                            retryinterval=retryinterval
+                            )
+
+        assert r.status_code == 201
+
+        # Lets confirm this change to register in the config files
+        # and the monitor service to restart
+
+        cls.commit_to_configuration(change_type='new', object_type='host',
+                                    object_name=name)
+
+        return cls.cb.get_host_details(host_name=name).json()
