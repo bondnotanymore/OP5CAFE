@@ -1,6 +1,6 @@
 import logging
-# import random
-# import time
+import random
+import string
 
 import pytest
 from dynaconf import settings as conf
@@ -114,3 +114,23 @@ class ConfigBaseFixture:
                                     object_name=name)
 
         return cls.cb.get_host_details(host_name=name).json()
+
+    @staticmethod
+    def random_string(prefix='HOST', size=4, suffix='OP5'):
+        """
+        Return a random string of alphanumeric characters of 'size' length.
+        The string would be embedded with the current timestamp in isoformat
+        at the time of being called.
+
+        For eg : 'Server_SyvHL5IX_SPARK_2019-06-03T17:44:42.856788'
+        """
+        if size <= 0:
+            return '{}{}'.format(prefix or '', suffix or '')
+
+        charpool = tuple(string.ascii_letters + string.digits)
+        final_string = ''
+        while size > 0:
+            segment_size = min(int(len(charpool) / 2), size)
+            size = size - segment_size
+            final_string += ''.join(random.sample(charpool, segment_size))
+        return '{}_{}_{}'.format(prefix, final_string, suffix)
