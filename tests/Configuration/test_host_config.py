@@ -52,7 +52,7 @@ class TestHostConfig(ConfigBaseFixture):
         name = 'First-local'
         maxcheckattempts = 3
         activechecks = 1
-        hostaddress = conf.HOST_ADDR
+        hostaddress = conf.CONFIG_HOST_ADDR
         command = 'check_tcp'
         commandargs = 1156
         checkinterval = 1
