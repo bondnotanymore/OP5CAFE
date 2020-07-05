@@ -16,8 +16,6 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-_hosts_to_delete = []
-
 
 @pytest.fixture(scope='class')
 def my_report_root_fixture(request, op5_client_auth_fix, ):
