@@ -42,18 +42,17 @@ def my_config_root_fixture(request, op5_client_auth_fix, ):
 
     for host_name in _hosts_to_delete:
         logging.info('Now lets delete the hosts one after the other')
-        for name in _hosts_to_delete:
-            r = cb.delete_host(host_name=name)
+        r = cb.delete_host(host_name=host_name)
 
-            assert r.status_code == 200
+        assert r.status_code == 200
 
-            # Lets confirm this change to register in the config files
-            # and the monitor service to restart
+        # Lets confirm this change to register in the config files
+        # and the monitor service to restart
 
-            r = cb.get_config_changes_to_save()
-            assert r.status_code == 200
-            r = cb.save_config_changes()
-            assert r.status_code == 200
+        r = cb.get_config_changes_to_save()
+        assert r.status_code == 200
+        r = cb.save_config_changes()
+        assert r.status_code == 200
 
 
 @pytest.mark.usefixtures('my_config_root_fixture')
