@@ -18,6 +18,7 @@ logging.basicConfig(
 
 
 @pytest.mark.smoke
+@pytest.mark.config
 @pytest.mark.host
 class TestHostConfig(ConfigBaseFixture):
 
