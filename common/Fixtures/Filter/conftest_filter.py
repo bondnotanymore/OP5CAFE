@@ -1,6 +1,4 @@
 import logging
-from datetime import datetime as dt, timedelta as td
-# import random
 import time
 
 import pytest
@@ -49,5 +47,5 @@ class FilterBaseFixture:
         r = cls.fb.get_filter_query_data(query=final_query, columns=columns)
         assert r.status_code == 200
         next_check_time = r.json()[0]['next_check']
-
+        logging.info(f'next check timestamp: {next_check_time}')
         return next_check_time-current_time
