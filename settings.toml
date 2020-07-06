@@ -8,7 +8,21 @@ user = "admin"
 op5_base_url = "https://localhost:4437/api"
 
 #test data
-host_addr = 'localhost'
+
+config_host_addr = 'localhost'
+plugin_host_addr = '172.105.50.160'
+
+#ansible data
+path_to_ansible = '/Users/kapilmathur/My_ansible_journey/ping_with_ansible/'
+inventory_file = '/Users/kapilmathur/My_ansible_journey/ping_with_ansible/inventory.txt'
+start_apache = 'install_apache.yaml'
+stop_apache = 'stop_apache.yaml'
+change_ssh_port = 'change_ssh_port.yaml'
+default_ssh_port = 'default_ssh_port.yaml'
+enable_tcp_port = ['allow_tcp_53.yaml', 'allow_tcp_80.yaml']
+disable_tcp_port = ['block_tcp_53.yaml', 'block_tcp_80.yaml']
+enable_udp_port = ['allow_udp_53.yaml', 'allow_udp_80.yaml']
+disable_udp_port = ['block_udp_53.yaml', 'block_udp_80.yaml']
 
 [staging]
 
