@@ -11,5 +11,4 @@ pytest-deadfixtures
 pytest-ordering
 pytest-sugar
 requests~=2.24.0
-secrets
 uuid
