@@ -5,7 +5,7 @@ cachetools
 dynaconf
 netaddr
 pre-commit
-pytest~=5.4.3
+pytest
 pytest-cov
 pytest-deadfixtures
 pytest-ordering
