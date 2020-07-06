@@ -1,8 +1,8 @@
 ansible~=2.9.10
 allure-pytest
 cryptography
-cachetools==4.1.1
-dynaconf~=3.0.0
+cachetools
+dynaconf
 netaddr
 pre-commit
 pytest~=5.4.3
