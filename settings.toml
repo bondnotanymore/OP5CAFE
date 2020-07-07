@@ -13,8 +13,8 @@ config_host_addr = 'localhost'
 plugin_host_addr = '172.105.50.160'
 
 #ansible data
-path_to_ansible = '/Users/kapilmathur/My_ansible_journey/ping_with_ansible/'
-inventory_file = '/Users/kapilmathur/My_ansible_journey/ping_with_ansible/inventory.txt'
+path_to_ansible = '/Users/kapilmathur/My_ansible_journey/playbooks'
+inventory_file = '/Users/kapilmathur/My_ansible_journey/playbooks/inventory.txt'
 start_apache = 'install_apache.yaml'
 stop_apache = 'stop_apache.yaml'
 change_ssh_port = 'change_ssh_port.yaml'
