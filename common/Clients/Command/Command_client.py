@@ -24,3 +24,14 @@ class CommandBaseClient(object):
 
         full_url = f'{self.url}/{self._command}'
         return self.client.post(url=full_url, data=host_payload)
+
+    _command = 'ACKNOWLEDGE_SVC_PROBLEM'
+
+    def acknowledge_svc_problem(self, hostname, description, sticky, notify,
+                                persistent, comment):
+        host_payload = dict(host_name=hostname, service_description=description,
+                            sticky=sticky, notify=notify,
+                            persistent=persistent, comment=comment)
+
+        full_url = f'{self.url}/{self._command}'
+        return self.client.post(url=full_url, data=host_payload)
