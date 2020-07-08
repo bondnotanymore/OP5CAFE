@@ -15,17 +15,14 @@ You should use a virtualenv. There are plenty of resources out there that descri
 3. Install all the dependencies --> `pip install -r requirements.txt`
 4. Set the environment against which you want to run your tests:
 
-    (i) Run --> `export ENV_FOR_DYNACONF=default` if you want to run using the default section config settings which 
-    points to old production or spark oh three.
-
-   (ii)Run --> `export ENV_FOR_DYNACONF=development` if you want to run tests using the development section config 
-   settings, which points to the development-spark env.
+   (i)Run --> `export ENV_FOR_DYNACONF=development` if you want to run tests using the development section config 
+   settings, which points to a dev env(or local) setup of OP5 monitor server.
    
-   (iii)Run --> `export ENV_FOR_DYNACONF=staging` if you want to run tests using the staging section config settings,
-   which points to the staging-spark env.
+   (ii)Run --> `export ENV_FOR_DYNACONF=staging` if you want to run tests using the staging section config settings,
+   which points to a staging env setup of OP5 monitor server
    
-   (iv)Run --> `export ENV_FOR_DYNACONF=production` if you want to run tests using the production section config 
-   settings, which points to the production-spark env.
+   (iii)Run --> `export ENV_FOR_DYNACONF=production` if you want to run tests using the production section config 
+   settings, which points to a production env setup of OP5 monitor server
    
 (Go to `settings.toml` to understand the different section/environment-scope configs)
 
@@ -37,32 +34,13 @@ Before running the tests, navigate to the OP5-pytest directory:
 
 Run all tests with: `pytest`, but not a good idea though
 
-Below are the different ways to run product specific tests:
+You can also run tests based on markers for eg:
 
-## Directory Layout
-```
-|                    __ User
-|                   |__ Account
-|____ Identity_Api__|__ Project
-|                   |__ tests
-|
-|____ Common->|____ Clients
-|             |
-|             |___ Fixtures -->  Conftests_<product>.py
-|             |
-|             |___ Data_models_______ Constants
-|                               |
-|                               |____ tools
-|_____ Tests
-|
-|_____ Conftest.py (Session level fixtures/ Plugins(product level conftests.py)
-|
-|_____ Settings.toml
-|
-|_____ Pytest.ini
-|
-|_____ Coverage (Coverage report)
-|
-|_____ Reports (HTML reports via allure
+To run end to end tests
+`pytest -m 'e2e`
 
-```
+To run host config tests
+`pytest -m 'host and config`
+
+To run service config tests
+`pytest -m 'service and config`
