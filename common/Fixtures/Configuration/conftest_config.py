@@ -73,7 +73,8 @@ class ConfigBaseFixture:
         changes = r.json()[0]
         assert changes['type'] == change_type
         assert changes['object_type'] == object_type
-        assert changes['name'] == object_name
+        if not object_type == 'service':
+            assert changes['name'] == object_name
         assert changes['user'] == conf.USER
 
         # Confirming the change to make the changes transfer from
@@ -93,8 +94,8 @@ class ConfigBaseFixture:
 
     @classmethod
     def create_new_host(cls, name, maxcheckattempts, hostaddress,
-                        command, commandargs, checkinterval, retryinterval,
-                        activechecks, **kwargs):
+                        command, checkinterval, retryinterval,
+                        activechecks, commandargs=None, **kwargs):
 
         r = cls.cb.add_host(name=name, maxcheckattempts=maxcheckattempts,
                             activechecks=activechecks,
