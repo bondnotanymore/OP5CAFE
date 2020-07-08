@@ -14,7 +14,7 @@ class CommandBaseClient(object):
         self.url = f'{self.base_url}/{self._suffix}'
         self.client = client
 
-    _command = 'ACKNOWLEDGE_HOST_PROBLEM'
+    _command1 = 'ACKNOWLEDGE_HOST_PROBLEM'
 
     def acknowledge_host_problem(self, hostname, sticky, notify,
                                  persistent, comment):
@@ -22,10 +22,10 @@ class CommandBaseClient(object):
         host_payload = dict(host_name=hostname, sticky=sticky, notify=notify,
                             persistent=persistent, comment=comment)
 
-        full_url = f'{self.url}/{self._command}'
+        full_url = f'{self.url}/{self._command1}'
         return self.client.post(url=full_url, data=host_payload)
 
-    _command = 'ACKNOWLEDGE_SVC_PROBLEM'
+    _command2 = 'ACKNOWLEDGE_SVC_PROBLEM'
 
     def acknowledge_svc_problem(self, hostname, description, sticky, notify,
                                 persistent, comment):
@@ -33,5 +33,5 @@ class CommandBaseClient(object):
                             sticky=sticky, notify=notify,
                             persistent=persistent, comment=comment)
 
-        full_url = f'{self.url}/{self._command}'
+        full_url = f'{self.url}/{self._command2}'
         return self.client.post(url=full_url, data=host_payload)
