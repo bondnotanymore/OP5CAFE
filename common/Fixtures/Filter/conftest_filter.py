@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime as dt
 import time
 
 import pytest
@@ -40,12 +41,14 @@ class FilterBaseFixture:
     @classmethod
     def how_much_to_sleep(cls, object_type, query):
 
-        current_time = time.time()
+        current_time = dt.now().timestamp()
+        logging.info(f'current_time: {current_time}')
         final_query = ''.join([object_type, query])
         columns = 'next_check'
         logging.info(f'final query is : {final_query}')
         r = cls.fb.get_filter_query_data(query=final_query, columns=columns)
         assert r.status_code == 200
+        logging.info(r.json())
         next_check_time = r.json()[0]['next_check']
         logging.info(f'next check timestamp: {next_check_time}')
         return next_check_time-current_time
