@@ -37,10 +37,10 @@ Run all tests with: `pytest`, but not a good idea though
 You can also run tests based on markers for eg:
 
 To run end to end tests
-`pytest -m 'e2e`
+`pytest -m e2e`
 
 To run host config tests
-`pytest -m 'host and config`
+`pytest -m 'host and config'`
 
 To run service config tests
-`pytest -m 'service and config`
+`pytest -m 'service and config'`

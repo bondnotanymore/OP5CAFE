@@ -50,7 +50,7 @@ class TestHostReport(OP5Fixture):
         hostname = host_name
         maxcheckattempts = 3
         retryinterval = 2
-        description = 'Ping services'
+        description = self.random_string(prefix='Ping services')
         displayname = f'Ping services for host: {host_name}'
         activechecks = True
 
@@ -59,7 +59,7 @@ class TestHostReport(OP5Fixture):
                                 hostname=hostname,
                                 maxcheckattempts=maxcheckattempts,
                                 retryinterval=retryinterval,
-                                description=self.random_string(),
+                                description=description,
                                 displayname=displayname,
                                 activechecks=activechecks,
                                 )
@@ -120,33 +120,31 @@ class TestHostReport(OP5Fixture):
             object_type=object_type, query=query
         )
         logging.info(f'OP5 will do next check in : {next_check_in}')
-        time.sleep(next_check_in + 45)
+        time.sleep(next_check_in + 10)
 
-        # Get report in terms of events
+        # Get report in terms of list views from the filter API
+        full_query = ''.join([object_type, query])
+        logging.info(full_query)
+        columns = f'state,state_text,has_been_checked,state_type,' \
+                  f'state_type_text,plugin_output'
+        logging.info(columns)
 
-        r = self.rb.get_state_report_all_events(
-            service_description=description,
-            # start_time=int(start_time),
-            # end_time=int(end_time)
-        )
+        r = self.fb.get_filter_query_data(query=full_query,
+                                          columns=columns)
 
-        # Lets collect the events data
-
-        events_data = r.json()['data']  # List of events dictionary items
-        logging.info(
-            f'Default service report after {checkinterval} minutes: {r.json()}'
-        )
         assert r.status_code == 200
-
-        # Validate that the last event generated presents correct data
-
-        ultimate_event = events_data[-1]
-        assert ultimate_event['event_type'] == 'service_alert'
-        assert ultimate_event['host_name'] == host_name
-        assert ultimate_event['service_description'] == description
-        assert ultimate_event['state'] == 'ok'
-        assert ultimate_event['hard'] == '1'
-        assert 'HTTP OK' in ultimate_event['output']
+        list_view_data = r.json()[0]
+        logging.info(
+            f'Check results report of service:{description} for host: '
+            f'{host_name}  after after 2 min and first check'
+            f'post addition of the service: {list_view_data}'
+        )
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 0
+        assert list_view_data['state_type'] == 1
+        assert list_view_data['state_text'] == 'ok'
+        assert list_view_data['state_type_text'] == 'hard'
+        assert 'HTTP OK' in list_view_data['plugin_output']
 
         # Lets bring down the http apache web server on the remote host
 
@@ -167,36 +165,35 @@ class TestHostReport(OP5Fixture):
             object_type=object_type, query=query
         )
         logging.info(f'OP5 will do next check in : {next_check_in}')
-        time.sleep(next_check_in + 45)
+        time.sleep(next_check_in + 10)
 
-        # Get report in terms of events
+        # Get report in terms of list views from the filter API
+        full_query = ''.join([object_type, query])
+        logging.info(full_query)
+        columns = f'state,state_text,has_been_checked,state_type,' \
+                  f'state_type_text,plugin_output'
+        logging.info(columns)
 
-        r = self.rb.get_state_report_all_events(
-            service_description=description,
-            # start_time=int(start_time),
-            # end_time=int(end_time)
-        )
+        r = self.fb.get_filter_query_data(query=full_query,
+                                          columns=columns)
 
-        # Lets collect the events data
-
-        events_data = r.json()['data']  # List of events dictionary items
-        logging.info(
-            f'Default service report after {checkinterval} minutes: {r.json()}'
-        )
         assert r.status_code == 200
+        list_view_data = r.json()[0]
+        logging.info(
+            f'Check results report of service:{description} for host: '
+            f'{host_name} for attempt no: {maxcheckattempts-1} after '
+            f'{checkinterval} minutes and '
+            f'first check post bringing down the service: {list_view_data}'
+        )
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 2
+        assert list_view_data['state_type'] == 0
+        assert list_view_data['state_text'] == 'critical'
+        assert list_view_data['state_type_text'] == 'soft'
+        assert any(('Connection refused' in list_view_data['plugin_output'],
+                    'HTTP CRITICAL' in list_view_data['plugin_output']))
 
-        # Validate that the last event generated presents correct data
-
-        ultimate_event = events_data[-1]
-        assert ultimate_event['event_type'] == 'service_alert'
-        assert ultimate_event['host_name'] == host_name
-        assert ultimate_event['service_description'] == description
-        assert ultimate_event['state'] == 'critical'
-        assert ultimate_event['hard'] == '0'
-        assert any(('Connection refused' in ultimate_event['output'],
-                    'HTTP CRITICAL' in ultimate_event['output']))
-
-        # This is the first check failed. Following will be
+        # This was the first check failed. Following will be
         # maxcheckattempts-1 more checks before the hosts reaches
         # hard state.
 
@@ -204,33 +201,33 @@ class TestHostReport(OP5Fixture):
             object_type=object_type, query=query
         )
         logging.info(f'OP5 will do next check in : {next_check_in}')
-        time.sleep(next_check_in + 45)
+        time.sleep(next_check_in + 10)
 
-        # Get report in terms of events
+        # Get report in terms of list views from the filter API
+        full_query = ''.join([object_type, query])
+        logging.info(full_query)
+        columns = f'state,state_text,has_been_checked,state_type,' \
+                  f'state_type_text,plugin_output'
+        logging.info(columns)
 
-        r = self.rb.get_state_report_all_events(
-            host_name=host_info['host_name'],
-            # start_time=int(start_time),
-            # end_time=int(end_time)
-        )
-        logging.info(
-            f'Default host report after next 2 checks failure: {r.json()}'
-        )
+        r = self.fb.get_filter_query_data(query=full_query,
+                                          columns=columns)
+
         assert r.status_code == 200
-
-        # Lets collect the events data
-
-        events_data = r.json()['data']  # List of events dictionary items
-
-        # Validate that the last event generated presents correct data
-
-        ultimate_event = events_data[-1]
-        assert ultimate_event['event_type'] == 'service_alert'
-        assert ultimate_event['host_name'] == host_name
-        assert ultimate_event['state'] == 'critical'
-        assert ultimate_event['hard'] == '1'
-        assert any(('Connection refused' in ultimate_event['output'],
-                    'SSH CRITICAL' in ultimate_event['output']))
+        list_view_data = r.json()[0]
+        logging.info(
+            f'Check results report of service:{description} for host: '
+            f'{host_name} for attempt no: {maxcheckattempts} after '
+            f'{checkinterval} minutes and '
+            f'second check post bringing down the service: {list_view_data}'
+        )
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 2
+        assert list_view_data['state_type'] == 1
+        assert list_view_data['state_text'] == 'critical'
+        assert list_view_data['state_type_text'] == 'hard'
+        assert any(('Connection refused' in list_view_data['plugin_output'],
+                    'HTTP CRITICAL' in list_view_data['plugin_output']))
 
         # Lets now acknowledge the event of service failure
         # and also disable active checks since the service is now a hardened
@@ -282,31 +279,27 @@ class TestHostReport(OP5Fixture):
             object_type=object_type, query=query
         )
         logging.info(f'OP5 will do next check in : {next_check_in}')
-        time.sleep(next_check_in + 45)
+        time.sleep(next_check_in + 10)
 
-        # Get report in terms of events
+        # Get report in terms of list views from the filter API
+        full_query = ''.join([object_type, query])
+        logging.info(full_query)
+        columns = f'state,state_text,has_been_checked,state_type,' \
+                  f'state_type_text,plugin_output'
+        logging.info(columns)
 
-        r = self.rb.get_state_report_all_events(
-            service_description=description,
-            # start_time=int(start_time),
-            # end_time=int(end_time)
-        )
+        r = self.fb.get_filter_query_data(query=full_query,
+                                          columns=columns)
 
-        # Lets collect the events data
-
-        events_data = r.json()['data']  # List of events dictionary items
-        logging.info(
-            f'Default service report after {checkinterval} min and first check'
-            f' post acknowledgement and fixing the issue: {r.json()}'
-        )
         assert r.status_code == 200
-
-        # Validate that the last event generated presents correct data
-
-        ultimate_event = events_data[-1]
-        assert ultimate_event['event_type'] == 'service_alert'
-        assert ultimate_event['host_name'] == host_name
-        assert ultimate_event['service_description'] == description
-        assert ultimate_event['state'] == 'ok'
-        assert ultimate_event['hard'] == '1'
-        assert 'HTTP OK' in ultimate_event['output']
+        list_view_data = r.json()[0]
+        logging.info(
+            f'Default host report after after 2 min and first check post '
+            f'acknowledgement and fixing the issue: {list_view_data}'
+        )
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 0
+        assert list_view_data['state_type'] == 1
+        assert list_view_data['state_text'] == 'ok'
+        assert list_view_data['state_type_text'] == 'hard'
+        assert 'HTTP OK' in list_view_data['plugin_output']
