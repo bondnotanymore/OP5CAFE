@@ -39,7 +39,7 @@ class OP5Fixture(
 @pytest.mark.e2e
 class TestHostReport(OP5Fixture):
 
-    def test_e2e_reporting_and_events(self):
+    def test_e2e_check_ssh(self):
         """Test to verify the end-to-end OP5 check_ssh plugin
         functionality.
         """
@@ -190,6 +190,10 @@ class TestHostReport(OP5Fixture):
         r = self.cmb.acknowledge_host_problem(hostname=host_name, sticky=1,
                                               notify=True, persistent=True,
                                               comment=ack_comments)
+
+        assert r.status_code == 200
+        result = r.json()['result']
+        assert result == f'Successfully submitted ACKNOWLEDGE_HOST_PROBLEM'
 
         runner = self.prepare_ansible_runner(
             inv_location=conf.INVENTORY_FILE,

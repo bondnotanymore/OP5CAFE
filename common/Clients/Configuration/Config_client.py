@@ -37,9 +37,9 @@ class ConfigBaseClient(object):
         activechecks,
         hostaddress,
         command,
-        commandargs,
         checkinterval,
         retryinterval,
+        commandargs=None,
         **kwargs,
     ):
         host_payload = dict(host_name=name,
@@ -80,7 +80,6 @@ class ConfigBaseClient(object):
     def add_service(
             self,
             command,
-            commandargs,
             checkinterval,
             hostname,
             maxcheckattempts,
@@ -88,6 +87,7 @@ class ConfigBaseClient(object):
             description,
             displayname,
             activechecks,
+            commandargs=None,
             **kwargs,
     ):
         service_payload = dict(check_command=command,
