@@ -1,0 +1,22 @@
+-
+  name: Change the default ssh port from 22 to some other value.
+  hosts: web_nodes1
+  vars:
+    ubuntu_common_ssh_port: 22
+  tasks:
+    -
+      name: Allow ssh traffic
+      ufw: rule=allow port={{ ubuntu_common_ssh_port }} proto=tcp
+
+    -
+      name: Change ssh port
+      lineinfile: dest=/etc/ssh/sshd_config
+                  regexp="^Port\s"
+                  line="Port {{ ubuntu_common_ssh_port }}"
+                  state=present
+      notify: Restart ssh
+
+  handlers:
+    -
+      name: Restart ssh
+      service: name=ssh state=restarted

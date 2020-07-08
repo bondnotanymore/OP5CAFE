@@ -1,0 +1,14 @@
+-
+  name: Test connection to a server and then stop apache2 service running
+  hosts: web_nodes
+  tasks:
+    -
+      name: Execute ping test using ansible for server
+      ping:
+      tags: done
+
+    -
+      name: Uninstall the apache on the remote host
+      apt:
+        name: apache2
+        state: absent

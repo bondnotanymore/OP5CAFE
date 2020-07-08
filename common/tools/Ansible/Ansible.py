@@ -57,7 +57,7 @@ if __name__ == '__main__':
     path_to_ansible = '/Users/kapilmathur/My_ansible_journey/playbooks'
     path_to_inventory = os.path.join(path_to_ansible, 'inventory.txt')
     path_to_playbook = path_to_ansible
-    playbook_name = 'install_docker.yaml'
+    playbook_name = 'stop_apache.yaml'
 
     pb_runner = ansible_runner(
         inv_location=path_to_inventory, pb_location=path_to_ansible,

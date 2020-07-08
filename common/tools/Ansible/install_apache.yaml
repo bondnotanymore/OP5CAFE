@@ -1,0 +1,29 @@
+-
+  name: Test connection to a server and then install apache
+  hosts: web_nodes
+  tasks:
+    -
+      name: Execute ping test using ansible for localhost
+      ping:
+      tags: done
+    -
+      name: Install apache on the remote host
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+    -
+      name: Ensure that the apache service is now up and running
+      service:
+        name: apache2
+        state: started
+    -
+      name: Change the contents of the index.html
+      copy:
+          content: "This apache server has been installed using Ansible 2.9"
+          dest: /var/www/html/index.html
+    -
+      name: Restart the apache service to take changes into account
+      service:
+        name: apache2
+        state: restarted
