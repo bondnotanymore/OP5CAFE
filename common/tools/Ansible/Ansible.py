@@ -54,7 +54,7 @@ class ansible_runner:
 
 if __name__ == '__main__':
 
-    path_to_ansible = '/Users/kapilmathur/My_ansible_journey/playbooks'
+    path_to_ansible = '/Users/kapilmathur/repositories/OP5-pytest/common/tools/Ansible'
     path_to_inventory = os.path.join(path_to_ansible, 'inventory.txt')
     path_to_playbook = path_to_ansible
     playbook_name = 'stop_apache.yaml'

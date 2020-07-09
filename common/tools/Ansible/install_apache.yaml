@@ -1,11 +1,8 @@
 -
   name: Test connection to a server and then install apache
   hosts: web_nodes
+  gather_facts: false
   tasks:
-    -
-      name: Execute ping test using ansible for localhost
-      ping:
-      tags: done
     -
       name: Install apache on the remote host
       apt:

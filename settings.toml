@@ -19,6 +19,8 @@ start_apache = 'install_apache.yaml'
 stop_apache = 'stop_apache.yaml'
 change_ssh_port = 'change_ssh_port.yaml'
 default_ssh_port = 'default_ssh_port.yaml'
+#rm -rf ~/.ansible/cp
+#gather_facts: false
 
 [staging]
 
