@@ -42,6 +42,37 @@ class TestHostReport(OP5Fixture):
     def test_e2e_check_ssh(self):
         """Test to verify the end-to-end OP5 check_ssh plugin
         functionality.
+
+        1) Add a new host(some real virtual server on the cloud)
+                    to be monitored by OP5
+        2) Add relevant checks (check_command=check_ssh in our case) so that
+        OP5 can run
+        the relevant plugin for that check within the stipulated
+        check intervals set by user and report back the results.
+        3) Set up the server for test, in our case, we need to make sure
+        that the ssh port of the server is set to default: 22
+        4) Let the first check run and verify the reports are good and
+        presenting correct data of successful connection to the server/host.
+        Verify the state and state_type values and plugin_output is accurate
+        as well.
+        5) Run a Ansible script to manipulate the remote host to change its
+        default ssh port to some other random value before the next scheduled
+        check.
+        6) Let the OP5 do the next check and verify the reports of
+        failed connection as the port has now changed and OP5 doesn't know
+        that.Host is determined as down now in the reports.
+        7) Based on maxcheckattempts, let the final check fail as well, when
+        the remote host enters a HARD state.
+        8) Acknowledge the remote host problem with proper comments and disable
+         the active_checks
+        for the remote host in OP5 till we fix the issue
+        9) Fix the problem using another Ansible script that sets the ssh
+        default port back to 22 so that OP5 can access it in the next check
+        10) Enable the active checks.
+        11) Lets the OP5 do the next check and verify the report of successful
+        connection this time around. Verify that host is reported as up and
+        state,state_type, plugin_output values are correct
+
         """
 
         # Add a new custom host to the OP5 monitor.
