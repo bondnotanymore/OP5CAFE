@@ -303,3 +303,22 @@ class TestHostReport(OP5Fixture):
         assert list_view_data['state_text'] == 'ok'
         assert list_view_data['state_type_text'] == 'hard'
         assert 'HTTP OK' in list_view_data['plugin_output']
+
+        self.stop_apache()
+
+    def stop_apache(self):
+        # Lets bring down the http apache web server on the remote host
+        # so that it can be reused for other tests and doesn't cause
+        # any discrepancy with the output.
+
+        ansible_start = dt.now()
+        logging.info(f'Ansible started at :{ansible_start}')
+        runner = self.prepare_ansible_runner(
+            inv_location=conf.INVENTORY_FILE,
+            pb_location=conf.PATH_TO_ANSIBLE,
+            pb_name=conf.STOP_APACHE
+        )
+
+        runner.playbook_runner()
+        ansible_end = dt.now()
+        logging.info(f'Ansible finished at :{ansible_end}')
