@@ -1,6 +1,7 @@
 -
   name: Change the default ssh port from 22 to some other value.
   hosts: web_nodes
+  gather_facts: false
   vars:
     ubuntu_common_ssh_port: 49167
   tasks:
