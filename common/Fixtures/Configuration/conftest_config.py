@@ -102,7 +102,7 @@ class ConfigBaseFixture:
                             hostaddress=hostaddress,
                             command=command, commandargs=commandargs,
                             checkinterval=checkinterval,
-                            retryinterval=retryinterval
+                            retryinterval=retryinterval, **kwargs,
                             )
 
         assert r.status_code == 201
