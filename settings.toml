@@ -25,12 +25,26 @@ default_ssh_port = 'default_ssh_port.yaml'
 [staging]
 
 #Auth config | Admin user details to login
-#user =
+user = "admin"
 #password =
 
 #base urls
-op5_base_url = "https://<staging-env-url>:<port>/api"
+op5_base_url = "https://172.105.38.86/api"
 
+#test data
+
+config_host_addr = 'localhost'
+plugin_host_addr = '172.105.50.160'
+
+#ansible data
+path_to_ansible = '/Users/kapilmathur/repositories/OP5-pytest/common/tools/Ansible'
+inventory_file = '/Users/kapilmathur/repositories/OP5-pytest/common/tools/Ansible/inventory.txt'
+start_apache = 'install_apache.yaml'
+stop_apache = 'stop_apache.yaml'
+change_ssh_port = 'change_ssh_port.yaml'
+default_ssh_port = 'default_ssh_port.yaml'
+#rm -rf ~/.ansible/cp
+#gather_facts: false
 [production]
 
 #Auth config | Admin user details to login
