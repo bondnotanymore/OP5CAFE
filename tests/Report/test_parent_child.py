@@ -1,6 +1,5 @@
-"""Test Spark check ssh plugin."""
+"""Test OP5 parent-child reachability logic."""
 import logging
-from datetime import datetime as dt, timedelta as td
 import time
 
 import pytest
