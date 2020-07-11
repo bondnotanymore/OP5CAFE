@@ -56,7 +56,6 @@ class TestHostParentChild(OP5Fixture):
 
         # Sleeping till the next check
         object_type = '[hosts]'
-        query = f'name="{parent_host_name}"'
         next_check_in_for_parent = self.how_much_to_sleep(
             object_type=object_type, query=f'name="{parent_host_name}"'
         )
@@ -75,14 +74,7 @@ class TestHostParentChild(OP5Fixture):
         r = self.fb.get_filter_query_data(query=full_parent_query,
                                           columns=columns)
 
-        assert r.status_code == 200
-        list_view_data = r.json()[0]
-        logging.info(list_view_data)
-        assert list_view_data['has_been_checked'] == 1
-        assert list_view_data['state'] == 0
-        assert list_view_data['state_type'] == 1
-        assert list_view_data['state_text'] == 'up'
-        assert list_view_data['state_type_text'] == 'hard'
+        self.verify_host_up(r)
 
         # Lets now patch the parent host with a check
         # that's not going to pass and will make it go down
@@ -117,14 +109,7 @@ class TestHostParentChild(OP5Fixture):
         r = self.fb.get_filter_query_data(query=full_parent_query,
                                           columns=columns)
 
-        assert r.status_code == 200
-        list_view_data = r.json()[0]
-        logging.info(list_view_data)
-        assert list_view_data['has_been_checked'] == 1
-        assert list_view_data['state'] == 1
-        assert list_view_data['state_type'] == 0
-        assert list_view_data['state_text'] == 'down'
-        assert list_view_data['state_type_text'] == 'soft'
+        self.verify_host_down(r, hard=False)
 
         # Adding a new child, with a valid command so that its first
         # first check passes.
@@ -165,14 +150,7 @@ class TestHostParentChild(OP5Fixture):
         r = self.fb.get_filter_query_data(query=full_child_query,
                                           columns=columns)
 
-        assert r.status_code == 200
-        list_view_data = r.json()[0]
-        logging.info(list_view_data)
-        assert list_view_data['has_been_checked'] == 1
-        assert list_view_data['state'] == 0
-        assert list_view_data['state_type'] == 1
-        assert list_view_data['state_text'] == 'up'
-        assert list_view_data['state_type_text'] == 'hard'
+        self.verify_host_up(r)
 
         # Lets now patch the child host with a check
         # that's not going to pass and will make it go down
@@ -199,11 +177,4 @@ class TestHostParentChild(OP5Fixture):
         r = self.fb.get_filter_query_data(query=full_child_query,
                                           columns=columns)
 
-        assert r.status_code == 200
-        list_view_data = r.json()[0]
-        logging.info(list_view_data)
-        assert list_view_data['has_been_checked'] == 1
-        assert list_view_data['state'] == 2
-        assert list_view_data['state_type'] == 0
-        assert list_view_data['state_text'] == 'unreachable'
-        assert list_view_data['state_type_text'] == 'soft'
+        self.verify_host_unreachable(r, hard=False)

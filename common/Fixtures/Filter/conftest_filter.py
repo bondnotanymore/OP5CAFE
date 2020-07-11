@@ -52,3 +52,51 @@ class FilterBaseFixture:
         next_check_time = r.json()[0]['next_check']
         logging.info(f'next check timestamp: {next_check_time}')
         return next_check_time-current_time
+
+    @classmethod
+    def verify_host_up(cls, r):
+
+        assert r.status_code == 200
+        list_view_data = r.json()[0]
+        logging.info(list_view_data)
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 0
+        assert list_view_data['state_type'] == 1
+        assert list_view_data['state_text'] == 'up'
+        assert list_view_data['state_type_text'] == 'hard'
+
+    @classmethod
+    def verify_host_down(cls, r, hard=True):
+
+        assert r.status_code == 200
+        list_view_data = r.json()[0]
+        logging.info(list_view_data)
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 1
+        if hard:
+            assert list_view_data['state_type'] == 1
+        else:
+            assert list_view_data['state_type'] == 0
+        assert list_view_data['state_text'] == 'down'
+        if hard:
+            assert list_view_data['state_type_text'] == 'hard'
+        else:
+            assert list_view_data['state_type_text'] == 'soft'
+
+    @classmethod
+    def verify_host_unreachable(cls, r, hard=True):
+
+        assert r.status_code == 200
+        list_view_data = r.json()[0]
+        logging.info(list_view_data)
+        assert list_view_data['has_been_checked'] == 1
+        assert list_view_data['state'] == 2
+        if hard:
+            assert list_view_data['state_type'] == 1
+        else:
+            assert list_view_data['state_type'] == 0
+        assert list_view_data['state_text'] == 'unreachable'
+        if hard:
+            assert list_view_data['state_type_text'] == 'hard'
+        else:
+            assert list_view_data['state_type_text'] == 'soft'
