@@ -25,6 +25,40 @@ class TestHostReport(OP5Fixture):
     def test_e2e_check_http(self):
         """Test to verify the end-to-end OP5 check_http plugin
         functionality.
+
+        1) Add a new host(some real virtual server on the cloud)
+                    to be monitored by OP5
+        2) Add relevant checks (check_command=check_ssh in our case) so that
+        OP5 can run the relevant plugin for that check within the stipulated
+        check intervals set by user and report back the results.
+        3) Add couple of services to our server, one which would never fail
+        like : check_ping and one which we would like to manipulate and test
+        OP5 results with : check_http (checks the status of a webserver)
+        3) Set up the server for test, in our case, we need to install a simple
+        apache web server on the remote host using Ansible
+        4) Let the first check run and verify the reports are good and
+        presenting correct data of successful connection to the server/host and
+        the apache page can load.
+        Verify the state and state_type values and plugin_output is accurate
+        as well. We use the /filter api to fetch and verify the results this
+        time instead of /reports
+        5) Run a Ansible script to manipulate the remote host to bring down
+        the apache server or kill its server before the next scheduled
+        check.
+        6) Let the OP5 do the next check and verify the reports of
+        failed connection as the apache web server is down.
+        7) Based on maxcheckattempts, let the final check fail as well, when
+        the remote host enters a HARD state.
+        8) Acknowledge the service problem with proper comments and disable
+        the active_checks for the remote host in OP5 till we fix the issue.
+        9) Fix the problem using another Ansible script that sets up the
+         apache web server on the remote server again so that OP5 can access
+         it/connect to it in the next check
+        10) Enable the active checks.
+        11) Lets the OP5 do the next check and verify the report of successful
+        connection this time around. Verify that service is reported as up and
+        state,state_type, plugin_output values are correct.
+        
         """
 
         # Add a new custom host to the OP5 monitor.
